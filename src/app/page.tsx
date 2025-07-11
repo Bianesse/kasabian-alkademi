@@ -1,7 +1,7 @@
 /* import Image from "next/image"; */
 /* import Navbar from "@/comps/nav"; */
 
-export default function Home() {
+export default async function Home() {
   return (
     <main>
       <div className="h-screen flex items-center justify-center">
