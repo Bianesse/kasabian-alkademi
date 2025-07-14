@@ -8,7 +8,7 @@ export default function About() {
           </p>
           <p className="text-lg text-gray-300 leading-relaxed">
             This platform is built using <span className="text-blue-400 font-semibold">Next.js</span> and
-            <span className="text-blue-400 font-semibold"> Tailwind CSS</span>
+            <span className="text-blue-400 font-semibold"> Tailwind CSS.</span>
           </p>
           <p className="text-lg text-gray-300 leading-relaxed">
             The goal is to write posts that are practical, easy to understand.
