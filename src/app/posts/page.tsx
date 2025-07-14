@@ -8,7 +8,7 @@ import Link from 'next/link';
     { id: 5, title: "Post Title 5", author: "Edward" },
 ]; */
 
-export async function getPost() {
+async function getPost() {
     const data = await fetch('https://dummyjson.com/posts');
     return data.json();
 }
