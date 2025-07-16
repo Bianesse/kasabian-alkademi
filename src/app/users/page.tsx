@@ -9,6 +9,8 @@ interface User {
 export default function Users() {
     const [users, setUsers] = useState<User[]>([]);
     const [newUser, setNewUser] = useState("");
+    const [editingUser, setEditingUser] = useState<User | null>(null);
+    const [editName, setEditName] = useState("");
 
     const fetchUser = async () => {
         const res = await fetch("/api/users");
@@ -32,13 +34,44 @@ export default function Users() {
         setNewUser("");
     };
 
-    /* const handleDelete = async (id: number) => {
-        const res = await fetch(`/api/users/${id}`, {
+    const handleDelete = async (id: number) => {
+        const confirmed = confirm("Are you sure you want to delete this user?");
+        if (!confirmed) return;
+
+        const res = await fetch("/api/users", {
             method: "DELETE",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id }),
         });
-        const data = await res.json();
-        setUsers(users.filter((user: User) => user.id !== id));
-    }; */
+
+        if (res.ok) {
+            setUsers(users.filter(user => user.id !== id));
+        } else {
+            console.error("Failed to delete user");
+        }
+    };
+
+    const openEditModal = (user: User) => {
+        setEditingUser(user);
+        setEditName(user.name);
+        (document.getElementById('edit_modal') as HTMLDialogElement)?.showModal();
+    };
+
+    const handleEditSubmit = async () => {
+        if (!editingUser) return;
+
+        const res = await fetch("/api/users", {
+            method: "PUT", // You can adjust your API to support PUT
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id: editingUser.id, name: editName }),
+        });
+
+        if (res.ok) {
+            await fetchUser();
+            setEditingUser(null);
+            (document.getElementById('edit_modal') as HTMLDialogElement)?.close();
+        }
+    };
 
     useEffect(() => {
         fetchUser();
@@ -71,10 +104,12 @@ export default function Users() {
                         <h2 className="text-xl font-bold mb-1">{user.name}</h2>
                         <h3 className="text-sm text-gray-400 mb-2">User #{user.id}</h3>
                         <div className="flex items-center gap-2">
-                            <button className="flex-1 px-4 py-2 border border-blue-600 text-blue-600 rounded-lg bg-transparent hover:bg-blue-600 hover:text-white transition-colors duration-200">
+                            <button className="flex-1 px-4 py-2 border border-blue-600 text-blue-600 rounded-lg bg-transparent hover:bg-blue-600 hover:text-white transition-colors duration-200"
+                                onClick={() => openEditModal(user)}>
                                 Edit
                             </button>
-                            <button className="flex-1 px-4 py-2 border border-red-600 text-red-600 rounded-lg bg-transparent hover:bg-red-600 hover:text-white transition-colors duration-200">
+                            <button className="flex-1 px-4 py-2 border border-red-600 text-red-600 rounded-lg bg-transparent hover:bg-red-600 hover:text-white transition-colors duration-200"
+                                onClick={() => handleDelete(user.id)}>
                                 Delete
                             </button>
                         </div>
@@ -82,6 +117,36 @@ export default function Users() {
                     </div>
                 ))}
             </div>
+
+            <dialog id="edit_modal" className="modal">
+                <div className="modal-box bg-gray-900 text-white">
+                    <h3 className="font-bold text-lg mb-4">Edit User</h3>
+                    <input
+                        type="text"
+                        className="w-full px-4 py-2 bg-gray-800 text-white placeholder-gray-400 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        value={editName}
+                        onChange={(e) => setEditName(e.target.value)}
+                    />
+                    <div className="modal-action">
+                        <form method="dialog" className="flex gap-2">
+                            <button
+                                type="button"
+                                onClick={handleEditSubmit}
+                                className="btn btn-primary"
+                            >
+                                Save
+                            </button>
+                            <button
+                                type="button"
+                                onClick={() => (document.getElementById('edit_modal') as HTMLDialogElement)?.close()}
+                                className="btn"
+                            >
+                                Cancel
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </dialog>
         </div>
     );
 }
