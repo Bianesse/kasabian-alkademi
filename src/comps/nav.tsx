@@ -17,6 +17,10 @@ const links = [
         name: "Contact",
         href: "/contact",
     },
+    {
+        name: "Users",
+        href: "/users",
+    }
 ]
 export default function Navbar() {
     return (
