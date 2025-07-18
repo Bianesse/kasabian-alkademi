@@ -1,5 +1,7 @@
 'use client';
 import React, { useState, useEffect } from "react";
+import crudModal from "@/comps/userCrudModal";
+import CrudModal from "@/comps/userCrudModal";
 
 interface User {
     id: number;
@@ -11,6 +13,7 @@ export default function Users() {
     const [newUser, setNewUser] = useState("");
     const [editingUser, setEditingUser] = useState<User | null>(null);
     const [editName, setEditName] = useState("");
+    const [isModalVisible, setIsModalVisible] = useState(false);
 
     const fetchUser = async () => {
         const res = await fetch("/api/users");
@@ -19,8 +22,7 @@ export default function Users() {
         setUsers(data);
     }
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
+    const handleSubmit = async () => {
         const id = (Math.floor(Math.random() * 100) + 1) + (Math.floor(Math.random() * 100) + 1);
         const res = await fetch("/api/users", {
             method: "POST",
@@ -51,10 +53,14 @@ export default function Users() {
         }
     };
 
+    const openAddModal = () => {
+        setIsModalVisible(true);
+    };
+
     const openEditModal = (user: User) => {
         setEditingUser(user);
         setEditName(user.name);
-        (document.getElementById('edit_modal') as HTMLDialogElement)?.showModal();
+        setIsModalVisible(true);
     };
 
     const handleEditSubmit = async () => {
@@ -81,7 +87,14 @@ export default function Users() {
         <div className="px-6 py-12 bg-black min-h-screen mx-20">
             <h1 className="text-4xl font-bold text-center mb-10 text-white">Users</h1>
 
-            <form className="flex items-center gap-2 py-4 rounded-xl">
+            <button
+                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 mb-3"
+                onClick={openAddModal}
+            >
+                Add User
+            </button>
+
+            {/* <form className="flex items-center gap-2 py-4 rounded-xl">
                 <input
                     type="text"
                     placeholder="Add a new user..."
@@ -95,7 +108,7 @@ export default function Users() {
                 >
                     Submit
                 </button>
-            </form>
+            </form> */}
 
 
             <div className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-6 space-y-6">
@@ -118,35 +131,26 @@ export default function Users() {
                 ))}
             </div>
 
-            <dialog id="edit_modal" className="modal">
-                <div className="modal-box bg-gray-900 text-white">
-                    <h3 className="font-bold text-lg mb-4">Edit User</h3>
-                    <input
-                        type="text"
-                        className="w-full px-4 py-2 bg-gray-800 text-white placeholder-gray-400 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        value={editName}
-                        onChange={(e) => setEditName(e.target.value)}
-                    />
-                    <div className="modal-action">
-                        <form method="dialog" className="flex gap-2">
-                            <button
-                                type="button"
-                                onClick={handleEditSubmit}
-                                className="btn btn-primary"
-                            >
-                                Save
-                            </button>
-                            <button
-                                type="button"
-                                onClick={() => (document.getElementById('edit_modal') as HTMLDialogElement)?.close()}
-                                className="btn"
-                            >
-                                Cancel
-                            </button>
-                        </form>
-                    </div>
-                </div>
-            </dialog>
+            <CrudModal
+                id="add_modal"
+                name={newUser}
+                onChange={(e) => setEditName(e.target.value)}
+                onSave={handleSubmit}
+                onClose={() => setEditingUser(null)}
+                visible={isModalVisible}
+            >
+            </CrudModal>
+
+            <CrudModal
+                id="edit_modal"
+                name={editName}
+                onChange={(e) => setEditName(e.target.value)}
+                onSave={handleEditSubmit}
+                onClose={() => setIsModalVisible(false)}
+                visible={isModalVisible}
+            >
+            </CrudModal>
+
         </div>
     );
 }
