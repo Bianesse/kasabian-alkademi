@@ -1,26 +1,22 @@
-/* import { prisma } from '@/lib/prisma'; */
+import { PrismaClient } from '@prisma/client';
 
-const users = [
-  { id: 1, name: "John Doe" },
-  { id: 2, name: "Jane Doe" },
-  { id: 3, name: "Bob Smith" },
-];
+const prisma = new PrismaClient();
 
 export async function GET() {
-  /* const user = await prisma.user.findMany();  */
+  const users = await prisma.user.findMany();
+
   return new Response(JSON.stringify(users), {
     status: 200,
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
   });
 }
 
 export async function POST(request: Request) {
   const body = await request.json();
-
-  users.push(body);
-  return new Response(JSON.stringify(body), {
+  const user = await prisma.user.create({ data: { name: body.name, email: 'test2@gmail.com', password: 'test2' } });
+  return new Response(JSON.stringify(user), {
     status: 200,
     headers: {
       "Content-Type": "application/json",
@@ -31,12 +27,10 @@ export async function POST(request: Request) {
 export async function DELETE(request: Request) {
   const { id } = await request.json();
 
-  const index = users.findIndex((user) => user.id === id);
+  const user = await prisma.user.delete({ where: { id } });
 
-  if (index !== -1) {
-    const deletedUser = users.splice(index, 1)[0];
-
-    return new Response(JSON.stringify(deletedUser), {
+  if (user) {
+    return new Response(JSON.stringify(user), {
       status: 200,
       headers: { "Content-Type": "application/json" },
     });
@@ -50,9 +44,8 @@ export async function DELETE(request: Request) {
 
 export async function PUT(request: Request) {
   const { id, name } = await request.json();
-  const user = users.find(u => u.id === id);
+  const user = await prisma.user.update({ where: { id }, data: { name } });
   if (user) {
-    user.name = name;
     return new Response(JSON.stringify(user), {
       status: 200,
       headers: { "Content-Type": "application/json" },

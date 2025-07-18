@@ -1,4 +1,4 @@
-/* import { PrismaClient, Prisma } from "../src/generated/prisma";
+import { PrismaClient, Prisma } from "@prisma/client";
 import bcrypt from "bcrypt";
 
 const prisma = new PrismaClient();
@@ -68,4 +68,4 @@ export async function main() {
     }
 }
 
-main(); */
+main();
