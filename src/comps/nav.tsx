@@ -2,6 +2,7 @@
 import Link from "next/link";
 import SignUpModal from "./signUpModal";
 import LoginModal from "./loginModal";
+import { signOut } from "next-auth/react";
 
 const links = [
     {
@@ -55,6 +56,10 @@ export default function Navbar() {
                     <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
                         onClick={() => (document.getElementById("login_modal") as HTMLDialogElement)?.showModal()}>
                         Login
+                    </button>
+                    <button className="bg-red-500 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+                        onClick={() => signOut({ callbackUrl: "/login" })}>
+                        Logout
                     </button>
                 </div>
 
