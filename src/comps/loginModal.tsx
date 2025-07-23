@@ -21,7 +21,7 @@ export default function LoginModal() {
                     />
                     <button
                         type="submit"
-                        className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-lg transition-colors duration-200"
+                        className="btn btn-outline btn-info rounded-xl"
                     >
                         Login
                     </button>

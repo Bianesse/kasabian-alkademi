@@ -25,7 +25,7 @@ export default function SignUpModal() {
                     />
                     <button
                         type="submit"
-                        className="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 rounded-lg transition-colors duration-200"
+                        className="btn btn-outline btn-info rounded-xl"
                     >
                         Register
                     </button>
