@@ -1,4 +1,7 @@
+'use client'
 import Link from "next/link";
+import SignUpModal from "./signUpModal";
+import LoginModal from "./loginModal";
 
 const links = [
     {
@@ -44,8 +47,13 @@ export default function Navbar() {
                     </div>
                 </div>
 
-                <div className="hidden md:block">
-                    <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
+                <div className="hidden md:block space-x-3">
+                    <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+                        onClick={() => (document.getElementById("signup_modal") as HTMLDialogElement)?.showModal()}>
+                        Sign Up
+                    </button>
+                    <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+                        onClick={() => (document.getElementById("login_modal") as HTMLDialogElement)?.showModal()}>
                         Login
                     </button>
                 </div>
@@ -58,6 +66,12 @@ export default function Navbar() {
                     </button>
                 </div>
             </nav>
+
+            <SignUpModal>
+            </SignUpModal>
+            
+            <LoginModal>
+            </LoginModal>
 
         </>
 
