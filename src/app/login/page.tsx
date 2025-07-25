@@ -6,26 +6,28 @@ import { useRouter } from "next/navigation";
 
 export default function Login() {
 
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const router = useRouter();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const router = useRouter();
 
-    const handleLogin = async () => {
-        const result = await signIn("credentials", {
-          email,
-          password,
-          redirect: false,
-        });
-        if (result?.error) {
-          alert(result.error);
-          console.error(result.error);
-        } else {
-          router.push("/");
-        }
-      };
-    
-    return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-900 text-white">
+  const handleLogin = async () => {
+    const result = await signIn("credentials", {
+      email,
+      password,
+      redirect: false,
+    });
+
+    if (result?.error) {
+      alert(result.error);
+      console.error(result.error);
+    } else {
+      router.push("/");
+    }
+
+  };
+
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gray-900 text-white">
       <div className="bg-gray-800 p-8 rounded-2xl shadow-xl w-full max-w-sm">
         <h2 className="text-2xl font-bold text-center mb-6">Login</h2>
         <div className="space-y-4">
@@ -72,5 +74,5 @@ export default function Login() {
         </p>
       </div>
     </div>
-    )
+  )
 }
