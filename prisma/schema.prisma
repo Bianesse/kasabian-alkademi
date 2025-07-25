@@ -8,14 +8,16 @@ datasource db {
 }
 
 model User {
-  id        Int       @id @default(autoincrement())
-  name      String
-  email     String    @unique
-  password  String // This will store the hashed password
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  Post      Post[]
-  Comment   Comment[]
+  id         Int       @id @default(autoincrement())
+  name       String
+  email      String    @unique
+  password   String // This will store the hashed password
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  verifiedAt DateTime?
+  Post       Post[]
+  Comment    Comment[]
+  Otp        Otp[]
 }
 
 model Post {
@@ -35,4 +37,12 @@ model Comment {
   Post     Post   @relation(fields: [postId], references: [id])
   authorId Int
   author   User   @relation(fields: [authorId], references: [id])
+}
+
+model Otp {
+  id      Int      @id @default(autoincrement())
+  otp     String
+  expires DateTime
+  userId  Int
+  user    User     @relation(fields: [userId], references: [id])
 }

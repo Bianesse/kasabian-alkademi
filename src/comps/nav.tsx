@@ -1,4 +1,9 @@
+'use client'
 import Link from "next/link";
+/* import SignUpModal from "./signUpModal";
+import LoginModal from "./loginModal"; */
+import { signOut } from "next-auth/react";
+import { useSession } from "next-auth/react";
 
 const links = [
     {
@@ -23,6 +28,7 @@ const links = [
     }
 ]
 export default function Navbar() {
+    const { data: session } = useSession();
     return (
         <>
             <nav className="bg-black shadow-md px-6 py-4 flex items-center justify-between">
@@ -44,10 +50,34 @@ export default function Navbar() {
                     </div>
                 </div>
 
-                <div className="hidden md:block">
-                    <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
-                        Login
-                    </button>
+                <div className="hidden md:block space-x-3">
+                    {!session ? (
+                        <>
+                            <Link
+                                href="/signup">
+                                <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+                                /* onClick={() => (document.getElementById("signup_modal") as HTMLDialogElement)?.showModal()} */>
+                                    Sign Up
+                                </button>
+
+                            </Link>
+                            <Link
+                                href="/login">
+                                <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+                                /* onClick={() => (document.getElementById("login_modal") as HTMLDialogElement)?.showModal()} */>
+                                    Login
+                                </button>
+                            </Link>
+
+                        </>
+                    ) : (
+                        <button
+                            onClick={() => signOut({ callbackUrl: "/login" })}
+                            className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition"
+                        >
+                            Logout
+                        </button>
+                    )}
                 </div>
 
                 <div className="md:hidden">
@@ -58,6 +88,12 @@ export default function Navbar() {
                     </button>
                 </div>
             </nav>
+
+            {/* <SignUpModal>
+            </SignUpModal>
+
+            <LoginModal>
+            </LoginModal> */}
 
         </>
 
