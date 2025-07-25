@@ -1,7 +1,7 @@
 'use client'
 import Link from "next/link";
-import SignUpModal from "./signUpModal";
-import LoginModal from "./loginModal";
+/* import SignUpModal from "./signUpModal";
+import LoginModal from "./loginModal"; */
 import { signOut } from "next-auth/react";
 import { useSession } from "next-auth/react";
 
@@ -28,7 +28,7 @@ const links = [
     }
 ]
 export default function Navbar() {
-    const { data: session, status } = useSession();
+    const { data: session } = useSession();
     return (
         <>
             <nav className="bg-black shadow-md px-6 py-4 flex items-center justify-between">

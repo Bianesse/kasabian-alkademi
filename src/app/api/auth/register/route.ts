@@ -1,7 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { NextRequest } from 'next/server';
 import bcrypt from 'bcrypt';
-import {z} from 'zod';
 
 const prisma = new PrismaClient();
 
