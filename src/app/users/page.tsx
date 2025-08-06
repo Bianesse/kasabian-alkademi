@@ -1,4 +1,5 @@
 'use client';
+import { useSession } from "next-auth/react";
 import React, { useState, useEffect } from "react";
 
 interface User {
@@ -14,6 +15,7 @@ export default function Users() {
     const [newEmail, setNewEmail] = useState("");
     const [newPassword, setNewPassword] = useState("");
     const [editingUser, setEditingUser] = useState<User | null>(null);
+    const {data: session} = useSession();
 
     const fetchUser = async () => {
         const res = await fetch("/api/users");
@@ -85,6 +87,9 @@ export default function Users() {
     return (
         <div className="px-6 py-12 bg-black min-h-screen mx-20">
             <h1 className="text-4xl font-bold text-center mb-10 text-white">Users</h1>
+            {session && (
+                <p>You are logged in as {session.user?.name}</p>
+            ) }
 
             <form className="flex flex-col sm:flex-row sm:items-center gap-2 py-4 rounded-xl">
                 <input

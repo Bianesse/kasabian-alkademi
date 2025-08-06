@@ -10,7 +10,7 @@ const links = [
         name: "Home",
         href: "/",
     },
-    {
+/*     {
         name: "Posts",
         href: "/posts",
     },
@@ -21,7 +21,7 @@ const links = [
     {
         name: "Contact",
         href: "/contact",
-    },
+    }, */
     {
         name: "Users",
         href: "/users",
